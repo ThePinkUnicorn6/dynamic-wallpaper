@@ -21,7 +21,7 @@ curquarter=$(($curdate - ($curdate % (15 * 60))))
 procurquart=`date -d "@$curquarter" +%M`
 hour=`date +%H`
 hourinmin=`expr $hour \* 60`
-HOUR=$((($hour * 4) + $procurquart / 15))
+HOUR=$(((10#$hour * 4) + 10#$procurquart / 15))
 
 ## Wordsplit in ZSH
 set -o shwordsplit 2>/dev/null
