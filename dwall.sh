@@ -16,12 +16,8 @@ MAGENTABG="$(printf '\033[45m')"  CYANBG="$(printf '\033[46m')"  WHITEBG="$(prin
 
 ## Wallpaper directory
 DIR="/usr/share/dynamic-wallpaper/images"
-curdate=`date "+%s"`
-curquarter=$(($curdate - ($curdate % (15 * 60))))
-procurquart=`date -d "@$curquarter" +%M`
-hour=`date +%H`
-hourinmin=`expr $hour \* 60`
-HOUR=$(((10#$hour * 4) + 10#$procurquart / 15))
+
+
 
 ## Wordsplit in ZSH
 set -o shwordsplit 2>/dev/null
@@ -143,7 +139,7 @@ esac
 ## Get Image
 get_img() {
 	image="$DIR/$STYLE/$1"
-
+	
 	# get image format
 	if [[ -f "${image}.png" ]]; then
 		FORMAT="png"
@@ -204,10 +200,27 @@ check_style() {
 	fi
 }
 
+check_time_length() {
+	if [[ -f "/usr/share/dynamic-wallpaper/images/$STYLE/15.txt" ]]; then
+		curdate=`date "+%s"`
+		curquarter=$(($curdate - ($curdate % (15 * 60))))
+		procurquart=`date -d "@$curquarter" +%M`
+		hour=`date +%H`
+		hourinmin=`expr $hour \* 60`
+		num=$(((10#$hour * 4) + 10#$procurquart / 15))
+		echo -e ${BLUE}"[*] Using time : ${MAGENTA}every 15 minutes"
+	else
+		HOUR=`date +%k`
+		num=$(($HOUR/1))
+		echo -e ${BLUE}"[*] Using time : ${MAGENTA}every hour"
+	fi
+	echo -e ${BLUE}"[*] current wallpaper number : ${GREEN}$num"
+}
+
 ## Main
-main() {
-	# get current hour
-	num=$(($HOUR/1))
+main() { 
+	# get current time and how often it should apply
+	check_time_length
 	# set wallpaper accordingly
 	if [[ -n "$PYWAL" ]]; then
 		{ pywal_set "$num"; reset_color; exit 0; }
