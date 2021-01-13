@@ -132,7 +132,7 @@ $ echo "$SHELL | $PATH | $DISPLAY | $DESKTOP_SESSION | $DBUS_SESSION_BUS_ADDRESS
 /usr/bin/zsh | /usr/local/bin:/usr/bin | :0 | Openbox | unix:path=/run/user/1000/bus | /run/user/1000
 ```
 
-- Now, Create an hourly cron job for **dwall** using `crontab` -
+- Now, Create a cron job for **dwall** using `crontab` -
 ```bash
 # export editor for crontab
 $ export EDITOR=vim
@@ -142,13 +142,14 @@ $ crontab -e
 
 # Add this line replacing the values of env variable and style with yours
 0 * * * * env PATH=/usr/local/bin:/usr/bin DISPLAY=:0 DESKTOP_SESSION=Openbox DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/1000/bus" /usr/bin/dwall -s firewatch
+# Use */15 instead of 0 at the start to make your wallpaper change every 15 minutes
 
 # check if job is created on your crontab
 $ crontab -l
 0 * * * * env PATH=/usr/local/bin:/usr/bin DISPLAY=:0 DESKTOP_SESSION=Openbox DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/1000/bus" /usr/bin/dwall -s firewatch
 ```
 
-- That's it, **dwall** added to your crontab and will change the wallpaper every hour. If you want to change the wallpaper style, just remove previous job and add new with another style.
+- That's it, **dwall** added to your crontab and will change the wallpaper every hour or 15 minutes. If you want to change the wallpaper style, just remove previous job and add new with another style.
 ```bash
 # delete previous job
 $ crontab -r
